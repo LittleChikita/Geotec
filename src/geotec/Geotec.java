@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.util.List;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
@@ -78,25 +79,29 @@ public class Geotec extends Application {
 
         Button btnCarregar = new Button("Carregar Dados");
         btnCarregar.setOnAction(e -> carregarDados());
-
+        
         txtBusca = new TextField();
         txtBusca.setPromptText("Digite o nome ou código IBGE do município");
 
         Button btnBuscar = new Button("Buscar");
         btnBuscar.setOnAction(e -> buscarMunicipio());
 
+        Button btnAtualizar = new Button("Atualizar Registro");
+        btnAtualizar.setOnAction(e -> abrirInterfaceAtualizacao(primaryStage));
+
         HBox hBoxBusca = new HBox(txtBusca, btnBuscar);
         hBoxBusca.setSpacing(10);
 
-        VBox vbox = new VBox(btnCarregar, hBoxBusca, tableView);
-        Scene scene = new Scene(vbox, 1000, 600);
+        VBox vbox = new VBox(btnCarregar, hBoxBusca, tableView, btnAtualizar);
+        vbox.setSpacing(10);
 
+        Scene scene = new Scene(vbox, 1000, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
     private void carregarDados() {
-        List<Municipio> lista = CSVUtils.lerCSV("C:\\Users\\Chê Chikita\\Desktop\\inCSV\\Arquivo.csv");
+        List<Municipio> lista = CSVUtils.lerCSV("C:\\Users\\Chê Chikita\\Desktop\\inCSV\\arquivo.csv");
         municipios.setAll(lista);
         tableView.setItems(municipios);
     }
@@ -112,6 +117,13 @@ public class Geotec extends Application {
         }
 
         tableView.setItems(resultadoBusca);
+    }
+
+    private void abrirInterfaceAtualizacao(Stage primaryStage) {
+        Stage atualizacaoStage = new Stage();
+        AtualizacaoRegistrosApp atualizacaoApp = new AtualizacaoRegistrosApp(municipios);
+        atualizacaoApp.start(atualizacaoStage);
+        atualizacaoStage.show();
     }
 
     public static void main(String[] args) {

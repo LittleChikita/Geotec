@@ -17,6 +17,7 @@ public class Municipio {
     private String peaDia;
     private String idhEducacao;
     private String idhLongevidade;
+    private String dataUltimaAtualizacao;
 
     public Municipio() {
     }
@@ -139,6 +140,56 @@ public class Municipio {
 
     public void setIdhLongevidade(String idhLongevidade) {
         this.idhLongevidade = idhLongevidade;
+    }
+
+    public void setDataUltimaAtualizacao(String dataUltimaAtualizacao) {
+        this.dataUltimaAtualizacao = dataUltimaAtualizacao;
+    }
+
+    public String getDataUltimaAtualizacao() {
+        return dataUltimaAtualizacao;
+    }
+
+    public static double converter(String valor) {
+        String valorSemFormato = valor.replace(".", "").replace(",", ".");
+        double valorConvertido = Double.parseDouble(valorSemFormato);
+        return valorConvertido;
+    }
+
+    public double calcularDensidadeDemografica() {
+        double populacaoNumerica = converter(populacao);
+        double areaNumerica = converter(areaKm);
+
+        double densidadeDemografica = populacaoNumerica / areaNumerica;
+
+        return densidadeDemografica;
+    }
+
+    public double calcularPIBPerCapitaTotal() {
+        double pibTotalNumerico = converter(pibTotal);
+        double populacaoNumerica = converter(populacao);
+
+        double pibPerCapitaTotal = pibTotalNumerico / populacaoNumerica;
+
+        return pibPerCapitaTotal;
+    }
+
+    public String classificarIDH() {
+        double idhNumerico = converter(idh);
+        if (idhNumerico > 0.80) {
+            return "Muito alto";
+        } else if (idhNumerico >= 0.70 && idhNumerico <= 0.80) {
+            return "Alto";
+        } else if (idhNumerico >= 0.55 && idhNumerico < 0.70) {
+            return "Médio";
+        } else {
+            return "Baixo";
+        }
+    }
+
+    public String converterParaString(double valor) {
+        String valorString = String.format("%.5f", valor);
+        return valorString;
     }
 
 }
