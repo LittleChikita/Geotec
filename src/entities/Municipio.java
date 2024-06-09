@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.List;
+
 public class Municipio {
 
     private String codigoIBGE;
@@ -191,5 +193,4 @@ public class Municipio {
         String valorString = String.format("%.5f", valor);
         return valorString;
     }
-
 }

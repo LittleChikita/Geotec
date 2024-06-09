@@ -1,7 +1,9 @@
 package entities;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
@@ -42,5 +44,33 @@ public class CSVUtils {
             e.printStackTrace();
         }
         return municipios;
+    }
+
+    public static void escreverCSV(List<Municipio> municipios, String caminho) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(caminho, StandardCharsets.ISO_8859_1))) {
+            bw.write("Código IBGE;Municípios;Microrregião;Estado;Região Geográfica;Área km2;População;Domicílios;PIB Total (R$ mil);IDH;Renda Média;Renda Nominal;PEA Dia;IDH Dimensão Educação;IDH Dimensão Longevidade\n");
+            for (Municipio m : municipios) {
+                bw.write(String.join(";",
+                        m.getCodigoIBGE(),
+                        m.getNome(),
+                        m.getMicroRegiao(),
+                        m.getEstado(),
+                        m.getRegiaoGeografica(),
+                        String.valueOf(m.getAreaKm()),
+                        String.valueOf(m.getPopulacao()),
+                        String.valueOf(m.getDomicilios()),
+                        String.valueOf(m.getPibTotal()),
+                        String.valueOf(m.getIdh()),
+                        String.valueOf(m.getRendaMedia()),
+                        String.valueOf(m.getRendaNominal()),
+                        String.valueOf(m.getPeaDia()),
+                        String.valueOf(m.getIdhEducacao()),
+                        String.valueOf(m.getIdhLongevidade())
+                ));
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
