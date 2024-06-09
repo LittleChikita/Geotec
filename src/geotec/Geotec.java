@@ -3,19 +3,16 @@ package geotec;
 import entities.CSVUtils;
 import entities.Municipio;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import java.util.List;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.util.List;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class Geotec extends Application {
 
@@ -25,6 +22,11 @@ public class Geotec extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        LoginApp loginApp = new LoginApp(this);
+        loginApp.start(new Stage());
+    }
+
+    public void iniciarTelaPrincipal(Stage primaryStage) {
         primaryStage.setTitle("Gestão de Municípios");
 
         tableView = new TableView<>();
@@ -79,12 +81,15 @@ public class Geotec extends Application {
 
         Button btnCarregar = new Button("Carregar Dados");
         btnCarregar.setOnAction(e -> carregarDados());
-        
+
         txtBusca = new TextField();
         txtBusca.setPromptText("Digite o nome ou código IBGE do município");
 
         Button btnBuscar = new Button("Buscar");
         btnBuscar.setOnAction(e -> buscarMunicipio());
+
+        Button btnAtualizarTabela = new Button("Atualizar");
+        btnAtualizarTabela.setOnAction(e -> carregarDados()); 
 
         Button btnAtualizar = new Button("Atualizar Registro");
         btnAtualizar.setOnAction(e -> abrirInterfaceAtualizacao(primaryStage));
@@ -92,7 +97,7 @@ public class Geotec extends Application {
         HBox hBoxBusca = new HBox(txtBusca, btnBuscar);
         hBoxBusca.setSpacing(10);
 
-        VBox vbox = new VBox(btnCarregar, hBoxBusca, tableView, btnAtualizar);
+        VBox vbox = new VBox(btnCarregar, hBoxBusca, tableView, btnAtualizarTabela, btnAtualizar); 
         vbox.setSpacing(10);
 
         Scene scene = new Scene(vbox, 1000, 600);
